@@ -1,0 +1,32 @@
+function DSB_FC_Amod(Am,fm,Ac,fc);
+t = 0:0.000001:0.001;
+m = Am*cos(2*pi*fm*t);
+c = cos(2*pi*fc*t);
+A1 = 0.5*Ac/Am;A2 = 0.8*Ac/Am;
+A3 = 1*Ac/Am;A4 = 1.5*Ac/Am;
+u1 = A1*(m.*c) + Ac*c;u2 = A2*(m.*c) + Ac*c;
+u3 = A3*(m.*c) + Ac*c;u4 = A4*(m.*c) + Ac*c;
+[a1,b1] = envelope(u1);[a2,b2] = envelope(u2);  % Getting the envelope by pre-defined function
+[a3,b3] = envelope(u3);[a4,b4] = envelope(u4);
+subplot(4,1,1);
+plot(t,u1);
+xlabel("Time(t)");ylabel("u_{1}(t)");
+title("DSB-SC Signal for A_{mod} = 0.5");
+hold on;plot(t,a1,'r');plot(t,b1,'m');hold off;
+subplot(4,1,2);
+plot(t,u2);
+xlabel("Time(t)");ylabel("u_{2}(t)");
+title("DSB-SC Signal for A_{mod} = 0.8");
+hold on;plot(t,a2,'r');plot(t,b2,'m');hold off;
+subplot(4,1,3);
+plot(t,u3);
+xlabel("Time(t)");ylabel("u_{3}(t)");
+title("DSB-SC Signal for A_{mod} = 1");
+hold on;plot(t,a3,'r');plot(t,b3,'m');hold off;
+subplot(4,1,4);
+plot(t,u4);
+xlabel("Time(t)");ylabel("u_{4}(t)");
+title("DSB-SC Signal for A_{mod} = 1.5");
+hold on;plot(t,a4,'r');plot(t,b4,'m');hold off;
+sgtitle("Fig: 5} (e)");
+end

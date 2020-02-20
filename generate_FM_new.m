@@ -1,0 +1,54 @@
+function generate_FM_new(Ac,fc,kf);
+fs = fc*10;t =-0.04:1/fs:0.04;
+m = (0:1/fs:0.02)*0;               % Generating the new message signal as per the question
+m = [m,((0.02+1/fs:1/fs:0.03)*100)-2];
+m = [m,((0.03+1/fs:1/fs:0.05)*(-100))+0.04*100];
+m = [m,(((0.05+1/fs:1/fs:0.06)*100)-6)];
+m = [m,(0.06+1/fs:1/fs:0.08)*0];
+c = cos((2*pi*(fc/10))*t);
+u = cos((2*pi*(fc/10))*t+1000*cumsum(m)/fs);
+u_d = diff(u);ud1 = abs(hilbert(u_d));    % Carrying out differentiation and envelope detection
+m_r = (ud1-mean(ud1))*fs/1000;            % Applying DC Block
+figure;
+subplot(3,1,1);
+plot(t,m);
+xlabel("Time(t)");ylabel("m(t)");
+title("Message Signal");
+subplot(3,1,2);
+plot(t,c);
+xlabel("Time(t)");ylabel("c(t)");
+title("Carrier Signal");
+subplot(3,1,3);
+plot(t,u);
+xlabel("Time(t)");ylabel("u(t)");
+title("FM Signal Waveform");
+sgtitle("Fig: 6} (d)-(a)");
+figure;
+subplot(2,1,1);
+plot(t(1:8000),u_d);
+xlabel("Time (t)");ylabel("u_{diff} (t)");
+title("Rectified FM signal");
+subplot(2,1,2);
+plot(t(1:8000),m_r);
+xlabel("Time (t)");ylabel("m_{recovered} (t)");
+title("Recovered Message Signal");
+sgtitle("Fig: 6} (d)-(b)");
+figure;
+subplot(2,2,1);
+plot(abs(fftshift(fft(m))));
+xlabel("Frequency (f)");ylabel("M(f)");
+title('Spectrum of Message Signal');
+subplot(2,2,2);
+plot(abs(fftshift(fft(u))));
+xlabel("Frequency(f)");ylabel("U(f)");
+title("Spectrum of FM Signal");
+subplot(2,2,3);
+plot(abs(fftshift(fft(u_d))));
+xlabel("Frequency(f)");ylabel("U_{rec} (f)");
+title("Spectrum of FM Rectified Signal");
+subplot(2,2,4);
+plot(abs(fftshift(fft(m_r))));
+xlabel("Frequency(f)");ylabel("M_{rec} (f)");
+title("Spectrum of Recovered Signal");
+sgtitle("Fig: 6} (d)-(c)");
+end
